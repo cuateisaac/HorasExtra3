@@ -1,0 +1,161 @@
+﻿@model IEnumerable<HorasExtra.Models.Request>
+
+@{
+    ViewData["Title"] = "Solicitudes de tiempo extra";
+}
+
+<div class="container-fluid"> 
+    <div class="row">
+        <h1>Solicitudes de tiempo extra</h1>
+    </div>
+    <div class="row">
+        <div class="card-body">
+            <div class="table-responsive">
+                <div class="row">
+                    <input id="BtnOpenEmpModal" type="submit" class="btn btn-secondary" value="Nueva Solicitud de tiempo extra"/>
+                </div>
+                <table id="basic-datatables" class="display table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Operation)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Department)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.CreatedDate)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.WorkSchedule)
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Operation)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Department)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.CreatedDate)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.WorkSchedule)
+                                </td>
+                                <td>
+                                    <a asp-action="Details" asp-route-id="@item.ID_request" class="btn btn-info">Agregar empleado</a> |
+                                    <a asp-action="Edit" asp-route-id="@item.ID_request" class="btn btn-primary">Edit</a> |
+                                    <a asp-action="Delete" asp-route-id="@item.ID_request" class="btn btn-danger">Delete</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="ModalAddEmployee" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #2a2f5b;">
+                <h5 class="modal-title" id="staticBackdropLabel" style="color:whitesmoke;">Registrar empleado</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span style="color:whitesmoke;" aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="DDOperation" class="control-label">Operacion</label>
+                    <input id="DDOperation" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label for="txtDepartment" class="control-label">Departamento</label>
+                    <input id="txtDepartment" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label for="txtSchedule" class="control-label">Horario</label>
+                    <input id="txtSchedule" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label for="ImgEmployeeSignature" class="control-label">Firma del supervisor</label>
+                    <div id="signature-pad" class="signature-pad">
+                        <div class="signature-pad--body shadow-lg p-3 mb-5 bg-white rounded">
+                            <canvas id="ImgEmployeeSignature" style="width: 100%;" class="rounded"></canvas>
+                        </div>
+                    </div>
+                    <div class="signature-pad--footer">
+                        <div class="signature-pad--actions">
+                            <div>
+                                <button id="BtnClearSignature" type="button" class="button clear" data-action="clear">Clear</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #2a2f5b;">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button id="BtnSaveEmployee" class="btn btn-success">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="~/js/site.js" asp-append-version="true"></script>
+<script src="~/js/core/popper.min.js"></script>
+<script src="~/js/plugin/chart.js/chart.min.js"></script>
+<script src="~/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
+<script src="~/js/plugin/jquery.sparkline/jquery.sparkline.min.js"></script>
+
+<script src="~/js/plugin/chart-circle/circles.min.js"></script>
+<script src="~/js/plugin/datatables/datatables.min.js"></script>
+<script src="~/js/plugin/bootstrap-notify/bootstrap-notify.min.js"></script>
+<script src="~/js/plugin/jsvectormap/jsvectormap.min.js"></script>
+<script src="~/js/plugin/jsvectormap/world.js"></script>
+<script src="~/js/plugin/sweetalert/sweetalert.min.js"></script>
+<script src="~/js/kaiadmin.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/davidshimjs/qrcodejs/qrcode.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/signature_pad/1.3.4/signature_pad.js" integrity="sha512-j36pYCzm3upwGd6JGq6xpdthtxcUtSf5yQJSsgnqjAsXtFT84WH8NQy9vqkv4qTV9hK782TwuHUTSwo2hRF+/A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/signature_pad/1.3.4/signature_pad.min.js" integrity="sha512-Mtr2f9aMp/TVEdDWcRlcREy9NfgsvXvApdxrm3/gK8lAMWnXrFsYaoW01B5eJhrUpBT7hmIjLeaQe0hnL7Oh1w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+
+<script>
+
+    $(document).ready(function () {
+        $("#BtnOpenEmpModal").click(function () {
+
+            $("#ModalAddEmployee").modal({ backdrop: 'static', keyboard: false }, "show");
+
+            function SignatureDesing() {
+                const canvas = document.getElementById('ImgEmployeeSignature');
+                const context = canvas.getContext('2d');
+                window.addEventListener('resize', resizeCanvas, false);
+                function resizeCanvas() {
+                    //canvas.width = window.innerWidth;
+                    //canvas.height = window.innerHeight;
+                    canvas.width = 740;
+                    canvas.height = 150;
+
+                    drawStuff();
+                }
+
+                resizeCanvas();
+
+                function drawStuff() {
+                }
+            }
+        });
+    });
+
+</script>
